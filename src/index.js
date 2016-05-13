@@ -29,7 +29,11 @@ class Raven extends winston.Transport {
     }
 
     this.ravenClient.on('error', (err) => {
-      console.error('Cannot talk to sentry!', err)
+      if (err.statusCode) {
+        console.error(`Error sending message to sentry [${err.statusCode}]`)
+      } else {
+        console.error('Cannot talk to sentry!', err)
+      }
     })
   }
 
