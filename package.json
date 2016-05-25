@@ -1,6 +1,6 @@
 {
   "name": "raven-winston",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Raven transport for winston",
   "main": "lib/index.js",
   "scripts": {
