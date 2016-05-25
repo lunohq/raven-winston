@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/lunohq/raven-winston#readme",
   "dependencies": {
+    "debug": "^2.2.0",
     "raven": "^0.10.0",
     "winston": "^2.2.0"
   },

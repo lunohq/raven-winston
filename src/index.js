@@ -1,6 +1,8 @@
 import winston from 'winston'
 import raven from 'raven'
 
+const debug = require('debug')('raven-winston')
+
 class Raven extends winston.Transport {
   constructor(options = {}) {
     super()
@@ -38,8 +40,13 @@ class Raven extends winston.Transport {
   }
 
   log(level, msg, meta={}, callback) {
+    debug('Log request', { level, msg, meta })
     level = this.levelsMap[level] || this.level
     const extra = Object.assign({}, meta)
+    if (meta instanceof Error) {
+      debug('Formatting error', { meta })
+      extra.err = { stack: meta.stack, message: meta.message }
+    }
     const tags = extra.tags
     delete extra.tags
 
@@ -52,6 +59,7 @@ class Raven extends winston.Transport {
 
     try {
       if (level === 'error') {
+        debug('Capturing data', { data })
         this.ravenClient.captureError(msg, data, () => callback(null, true))
       } else {
         this.ravenClient.captureMessage(msg, data, () => callback(null, true))
